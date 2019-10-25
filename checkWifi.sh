@@ -1,10 +1,11 @@
 #!/bin/bash
 
-# log file location
-log="/home/pi/wifi.log"
+## log date
+#echo "script executed: " $(date '+%m-%d-%Y %T') >> $wifi_log
 
-## log attempt
-#echo "script executed: " $(date '+%m-%d-%Y %T') >> $log
+# log file location
+wifi_log="/home/pi/wifi.log"
+network_log="/home/pi/connection.log"
 
 ## ping router to test for wlan0 up state
 ping -c4 192.168.20.1 > /dev/null
@@ -12,24 +13,38 @@ ping -c4 192.168.20.1 > /dev/null
 ## restart wlan0 if ping fails
 if [ $? != 0 ]
 then
-  echo  $(date '+%m-%d-%Y %T') >> $log
-  echo "Network connection is down." >> $log
-  echo "Running check internet script (see connection log)" >> $log
+  echo $(date '+%m-%d-%Y %T') "Network connection is down." >> $wifi_log
+  echo $(date '+%m-%d-%Y %T') "Running check internet script (see connection.log)" >> $wifi_log
 
-  # run network test script
+  # run network test
+  echo "START====================================" >> $network_log
+  echo $(date '+%m-%d-%Y %T') "Network connection is down" >> $network_log
   sh /home/pi/check_internet.sh
   sleep 10
 
   # restart wlan0
-  echo "restarting wlan0" >> $log
-  /sbin/ifdown 'wlan0'
+  echo $(date '+%m-%d-%Y %T') "restarting wlan0" >> $wifi_log
+  sudo /etc/init.d/networking restart
   sleep 5
-  /sbin/ifup --force 'wlan0'
-  echo "wlan0 restarted" >> $log
 
-  # run network test script again
-  echo "Running check internet script again (see connection log)" >> $log
+  ## ping router to test for wlan0 up state
+  ping -c4 192.168.20.1 > /dev/null
+
+  if [ $? -eq 0 ]
+  then
+    echo $(date '+%m-%d-%Y %T') "network connection re-established" >> $wifi_log
+    echo >> $network_log
+    echo $(date '+%m-%d-%Y %T') "network connection re-established" >> $network_log
+  else
+	echo $(date '+%m-%d-%Y %T') "network is still down" >> $wifi_log
+        echo >> $network_log
+        echo $(date '+%m-%d-%Y %T') "network is still down" >> $network_log
+  fi
+
+  # run network test again
+  echo $(date '+%m-%d-%Y %T') "Running check internet script again (see connection.log)" >> $wifi_log
   sh /home/pi/check_internet.sh
+  echo "======================================END" >> $network_log
 
 #else
 #  echo  $(date '+%m-%d-%Y %T') >> $log
