@@ -1,59 +1,66 @@
 #!/bin/bash
 
+## log file location
+wifi_log="/home/pi/wifi.log"
+
 ## log date
 #echo "script executed: " $(date '+%m-%d-%Y %T') >> $wifi_log
 
-# log file location
-wifi_log="/home/pi/wifi.log"
-network_log="/home/pi/connection.log"
+## loop counter
+count=0
 
-## ping router to test for wlan0 up state
-ping -c4 192.168.20.1 > /dev/null
+## router address
+router=192.168.20.1
+
+## ping router to test for wlan0 state
+ping -c4 $router
+pingtest=$?
 
 ## restart wlan0 if ping fails
-if [ $? != 0 ]
-then
+while [ $pingtest != 0 ]
+do
+  ## reboot system after 10 fails 
+  if [ $count -eq 10 ]
+    then
+      sudo /sbin/shutdown -r now
+  fi
+
   echo $(date '+%m-%d-%Y %T') "Network connection is down." >> $wifi_log
   echo $(date '+%m-%d-%Y %T') "Running check internet script (see connection.log)" >> $wifi_log
 
-  # run network test
-  echo "START====================================" >> $network_log
-  echo $(date '+%m-%d-%Y %T') "Network connection is down" >> $network_log
-  sh /home/pi/check_internet.sh
+  ## run network test and allow time to run
+  bash /home/pi/check_internet.sh
+  sleep 12
+
+  echo $(date '+%m-%d-%Y %T') "Restarting wlan0" >> $wifi_log
+  
+  ## restart wlan0 interface
+  sudo ip link set wlan0 down
+  sleep 3
+  sudo ip link set wlan0 up
   sleep 10
 
-  # restart wlan0
-  echo $(date '+%m-%d-%Y %T') "restarting wlan0" >> $wifi_log
-  sudo /etc/init.d/networking restart
-  sleep 5
+  ## ping router to test for wlan0 state
+  ping -c4 $router
+  pingtest=$?
 
-  ## ping router to test for wlan0 up state
-  ping -c4 192.168.20.1 > /dev/null
-
-  if [ $? -eq 0 ]
+  if [ $pingtest -eq 0 ]
   then
-    echo $(date '+%m-%d-%Y %T') "network connection re-established" >> $wifi_log
-    echo >> $network_log
-    echo $(date '+%m-%d-%Y %T') "network connection re-established" >> $network_log
-  else
-	echo $(date '+%m-%d-%Y %T') "network is still down" >> $wifi_log
-        echo >> $network_log
-        echo $(date '+%m-%d-%Y %T') "network is still down" >> $network_log
+    ## success, connection back up!
+    echo $(date '+%m-%d-%Y %T') "Network connection re-established" >> $wifi_lo
+    echo $(date '+%m-%d-%Y %T') "Running check internet script again (see connection.log)" >> $wifi_log
+    
+    ## run network test again and allow time to run
+    bash /home/pi/check_internet.sh
+    sleep 12
+    
+    ## exit loop
+    break
   fi
 
-  # run network test again
-  echo $(date '+%m-%d-%Y %T') "Running check internet script again (see connection.log)" >> $wifi_log
-  sh /home/pi/check_internet.sh
-  echo "======================================END" >> $network_log
+  ## increment count
+  let count++
+done
 
-#else
-#  echo  $(date '+%m-%d-%Y %T') >> $log
-#  echo "network connection is up" >> $log
-#  sh /home/pi/check_internet.sh
-fi
-
-## reboot pi if ping fails
-#if [ $? != 0 ]
-#then
-#  sudo /sbin/shutdown -r now
-#fi
+## log successful exit
+#echo $(date '+%m-%d-%Y %T') "Script ended.            [ SUCCESS ]" >> $wifi_log
