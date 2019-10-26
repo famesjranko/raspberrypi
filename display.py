@@ -11,10 +11,10 @@
 ## 
 
 from gpiozero import Button 	# to access buttons
-from time import sleep		    # for sleep function
-import os			            # for shutdown/kill control
+from time import sleep          # for sleep function
+import os                       # for shutdown/kill control
 import subprocess               # to run program
-import signal			        # to kill program
+import signal                   # to kill program
 
 ## define display button Objects
 run_halt    = Button(4)
