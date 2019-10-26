@@ -1,15 +1,21 @@
 #!/bin/bash
 
-## router gateway address
-router=192.168.20.1
+## Only choose one:
+##    Set local router gateway address,
+##    or have it set automagically via /sbin/ip route.
+#router=192.168.1.1
+router=`/sbin/ip route | awk '/default/ { print $3 }'`
 
-## preferred upstream dns address
+## Only choose one:
+##    Choose preferred upstream dns address,
+##    or have it set automagically via /etc/resolv.conf
 #checkdns=8.8.8.8
 #checkdns=1.1.1.1
 #checkdns=9.9.9.9
-checkdns=156.154.70.5
+checkdns=`cat /etc/resolv.conf | awk '/nameserver/ {print $2}' | awk 'NR == 1 {print; exit}'`
 
-## preferred domain address
+## Only choose one:
+##    Preferred domain address
 checkdomain=google.com
 #checkdomain=facebook.com
 #checkdomain=yahoo.com
@@ -60,7 +66,7 @@ pingnet()
 
 pingdns()
 {
-  ## Test connection to upstream DNS
+  ## Test connection to DNS server
   ping $checkdns -c 4
     if [ $? -eq 0 ]
     then
@@ -76,8 +82,8 @@ httpreq()
   ## Test HTTP connection
   case "$(curl -s --max-time 2 -I $checkdomain | sed 's/^[^ ]*  *\([0-9]\).*/\1/; 1q')" in
   [23])  echo "Check HTTP connection           [ SUCCESS ]" >> $log;;
-  5)     echo "Check HTTP connection           [ FAIL    ]" >> $log;exit 1;;
-  *)     echo "Check HTTP connection           [ FAIL    ]"; exit 1;;
+  5)     echo "Check HTTP connection           [ FAIL    ]" >> $log; exit 1;;
+  *)     echo "Check HTTP connection           [ FAIL    ]" >> $log; exit 1;;
   esac
 #  exit 0
 }
@@ -85,6 +91,7 @@ httpreq()
 ## Ping gateway first to confirm LAN connection
 ping $router -c 4
 
+## Ping successful if returns 0
 if [ $? -eq 0 ]
 then
   interfacestate
