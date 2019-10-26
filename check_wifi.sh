@@ -10,6 +10,7 @@ wifi_log="/home/pi/wifi.log"
 count=0
 
 ## router address
+#router=`/sbin/ip route | awk '/default/ { print $3 }'`
 router=192.168.20.1
 
 ## ping router to test for wlan0 state
