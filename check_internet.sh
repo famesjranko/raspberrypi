@@ -14,7 +14,7 @@ checkdomain=google.com
 #checkdomain=facebook.com
 #checkdomain=yahoo.com
 
-## log location
+## log location - create this manually
 log='/home/pi/connection.log'
 
 ## Log date/time of execution
