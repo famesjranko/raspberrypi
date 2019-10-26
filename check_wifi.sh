@@ -1,6 +1,6 @@
 #!/bin/bash
 
-## log file location
+## log file location - create this manually
 wifi_log="/home/pi/wifi.log"
 
 ## log date
