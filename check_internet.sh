@@ -12,7 +12,7 @@ router=`/sbin/ip route | awk '/default/ { print $3 }'`
 #checkdns=8.8.8.8
 #checkdns=1.1.1.1
 #checkdns=9.9.9.9
-checkdns=`cat /etc/resolv.conf | awk '/nameserver/ {print $2}' | awk 'NR == 1 {print; exit}'`
+checkdns=`cat /etc/resolv.conf | awk '/nameserver/ { print $2 }'`
 
 ## Only choose one:
 ##    Preferred domain address
