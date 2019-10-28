@@ -3,9 +3,6 @@
 ## log file location - create this manually
 log="/home/pi/wifi.log"
 
-## log date
-#echo "script executed: " $(date '+%m-%d-%Y %T') >> $log
-
 ## loop counter
 count=0
 
@@ -33,7 +30,7 @@ do
       echo $(date '+%m-%d-%Y %T') "Network connection is down." >> $log
       echo $(date '+%m-%d-%Y %T') "Running check internet script." >> $log
       
-      ## run network test and allow time to run
+      ## run network test and allow time to run - can remove if unwanted
       bash /home/pi/check_internet.sh
       sleep 15
     else
@@ -59,7 +56,7 @@ do
     echo $(date '+%m-%d-%Y %T') "Network connection re-established." >> $log
     echo $(date '+%m-%d-%Y %T') "Running check internet script again." >> $log
     
-    ## run network test again and allow time to run
+    ## run network test again and allow time to run - can remove if unwanted
     bash /home/pi/check_internet.sh
     sleep 15
     
@@ -70,6 +67,3 @@ do
   ## increment count
   let count++
 done
-
-## log successful exit
-#echo $(date '+%m-%d-%Y %T') "Script ended.            [ SUCCESS ]" >> $log
