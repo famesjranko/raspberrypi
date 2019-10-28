@@ -1,10 +1,10 @@
 #!/bin/bash
 
 ## log file location - create this manually
-wifi_log="/home/pi/wifi.log"
+log="/home/pi/wifi.log"
 
 ## log date
-#echo "script executed: " $(date '+%m-%d-%Y %T') >> $wifi_log
+#echo "script executed: " $(date '+%m-%d-%Y %T') >> $log
 
 ## loop counter
 count=0
@@ -25,15 +25,21 @@ do
     then
       sudo /sbin/shutdown -r now
   fi
-
-  echo $(date '+%m-%d-%Y %T') "Network connection is down." >> $wifi_log
-  echo $(date '+%m-%d-%Y %T') "Running check internet script (see connection.log)" >> $wifi_log
+  
+  if [ $count -lt 1 ]
+    then
+      echo $(date '+%m-%d-%Y %T') "Network connection is down." >> $log
+    else
+      echo $(date '+%m-%d-%Y %T') "Network connection is still down." >> $log
+  fi
+  
+  echo $(date '+%m-%d-%Y %T') "Running check internet script." >> $log
 
   ## run network test and allow time to run
   bash /home/pi/check_internet.sh
   sleep 12
 
-  echo $(date '+%m-%d-%Y %T') "Restarting wlan0" >> $wifi_log
+  echo $(date '+%m-%d-%Y %T') "Restarting wlan0." >> $log
   
   ## restart wlan0 interface
   sudo ip link set wlan0 down
@@ -48,8 +54,8 @@ do
   if [ $pingtest -eq 0 ]
   then
     ## success, connection back up!
-    echo $(date '+%m-%d-%Y %T') "Network connection re-established" >> $wifi_lo
-    echo $(date '+%m-%d-%Y %T') "Running check internet script again (see connection.log)" >> $wifi_log
+    echo $(date '+%m-%d-%Y %T') "Network connection re-established." >> $log
+    echo $(date '+%m-%d-%Y %T') "Running check internet script again." >> $log
     
     ## run network test again and allow time to run
     bash /home/pi/check_internet.sh
