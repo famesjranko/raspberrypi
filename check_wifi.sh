@@ -67,3 +67,5 @@ do
   ## increment count
   let count++
 done
+
+exit 0
