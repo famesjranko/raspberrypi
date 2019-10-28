@@ -70,4 +70,4 @@ do
 done
 
 ## log successful exit
-#echo $(date '+%m-%d-%Y %T') "Script ended.            [ SUCCESS ]" >> $wifi_log
+#echo $(date '+%m-%d-%Y %T') "Script ended.            [ SUCCESS ]" >> $log
