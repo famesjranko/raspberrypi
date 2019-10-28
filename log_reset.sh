@@ -3,10 +3,10 @@
 Date=$(date '+%m-%d-%Y')
 
 ## log file location
-logheader="/home/pi/wifi.log"
+log="/home/pi/wifi.log"
 
 ## log header
-header="### wifi log"
+logheader="### wifi log"
 
 ## log backup destinateion
 backup="/home/pi/wifi.log."$Date
