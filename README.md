@@ -16,4 +16,10 @@ If connection fails to come up after 10 attempts, the script will initiate reboo
 All relevant output is logged to an external file 'wifi.log.'
 
 (3) display.py (Python)
-Written for use with the pitft 2.2" display. Allows programs and/or commands to be called from the 6 dusplay buttons.  
+Written for use with the pitft 2.2" display. Allows programs and/or commands to be called from the 6 dusplay buttons.
+
+(4) log_reset.sh (Bash)
+A simply script to automate resetting of logs.
+
+(5) wifi_reset.log (Bash)
+The reset log used in script (4) and the output of scripts (1) and (2).
