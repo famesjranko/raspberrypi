@@ -17,7 +17,6 @@ dir="/home/pi/logs/"
 if [ ! -d "$dir" ]
   then
     mkdir -p $dir
-   echo "1"
 fi
 
 ## backup log name
