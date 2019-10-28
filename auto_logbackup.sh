@@ -29,17 +29,17 @@ exists=$(find "$dir" -name "$backup")
 ## if today's log already exists, add timestamp, otherwise use date only
 if [ "$exists" == "$dir$backup" ]
   then
-    ## create log backup file
+    ## create log backup file with timestamp
     touch $dir$backup.$time
 
     ## backup log
-    cp $log $backup
+    cp $log $dir$backup.$time
   else
     ## create log backup file
     touch $dir$backup
 
     ## backup log
-    cp $log $backup
+    cp $log $dir$backup
 fi
 
 ## confirm backup copy successful
@@ -48,7 +48,6 @@ match=$?
 
 if [ $match != 0 ]
   then
-    echo "5"
     # if backup doesn't match original, exit to prevent unwanted log deletion
     # could output failure to an error.log file if wanted
     exit 1
