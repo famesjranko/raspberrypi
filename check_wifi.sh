@@ -21,7 +21,7 @@ pingtest=$?
 while [ $pingtest != 0 ]
 do
   ## reboot system after 10 fails 
-  if [ $count -eq 10 ]
+  if [ $count -eq 9 ]
     then
       echo $(date '+%m-%d-%Y %T') "Network connection unrecoverable, rebooting." >> $log
       sudo /sbin/shutdown -r now
@@ -31,22 +31,21 @@ do
   if [ $count -lt 1 ]
     then
       echo $(date '+%m-%d-%Y %T') "Network connection is down." >> $log
+      echo $(date '+%m-%d-%Y %T') "Running check internet script." >> $log
+      
+      ## run network test and allow time to run
+      bash /home/pi/check_internet.sh
+      sleep 15
     else
       echo $(date '+%m-%d-%Y %T') "Network connection is still down!" "[" $count "]" >> $log
   fi
-  
-  echo $(date '+%m-%d-%Y %T') "Running check internet script." >> $log
-
-  ## run network test and allow time to run
-  bash /home/pi/check_internet.sh
-  sleep 15
   
   echo "" >> $log
   echo $(date '+%m-%d-%Y %T') "Restarting wlan0." >> $log
   
   ## restart wlan0 interface
   sudo ip link set wlan0 down
-  sleep 3
+  sleep 2
   sudo ip link set wlan0 up
   sleep 5
 
