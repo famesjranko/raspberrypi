@@ -1,5 +1,6 @@
 #!/bin/bash
 
+## current date
 Date=$(date '+%m-%d-%Y')
 
 ## log file location
