@@ -7,7 +7,7 @@ wifi_log="/home/pi/wifi.log"
 wifi_log_reset="/home/pi/wifi_reset.log"
 
 # reset log
-echo "resetting wifi.log. . ."
+echo "resetting wifi.log . . ."
 cp $wifi_log_reset $wifi_log
 
 sleep 1
