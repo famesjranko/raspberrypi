@@ -21,7 +21,7 @@ checkdomain=google.com
 #checkdomain=yahoo.com
 
 ## log location - create this manually
-log='/home/pi/connection.log'
+log='/home/pi/wifi.log'
 
 ## Log date/time of execution
 echo >> $log
