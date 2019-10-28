@@ -15,4 +15,5 @@ If connection has failed, it will call script (1) then reset the wlan0 interface
 If connection fails to come up after 10 attempts, the script will initiate reboot. 
 All relevant output is logged to an external file 'wifi.log.'
 
-
+(3) display.py (Python)
+Written for use with the pitft 2.2" display. Allows programs and/or commands to be called from the 6 dusplay buttons.  
