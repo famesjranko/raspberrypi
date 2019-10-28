@@ -26,19 +26,21 @@ do
       sudo /sbin/shutdown -r now
   fi
   
+  echo >> $log
   if [ $count -lt 1 ]
     then
       echo $(date '+%m-%d-%Y %T') "Network connection is down." >> $log
     else
-      echo $(date '+%m-%d-%Y %T') "Network connection is still down." >> $log
+      echo $(date '+%m-%d-%Y %T') "Network connection is still down!" >> $log
   fi
   
   echo $(date '+%m-%d-%Y %T') "Running check internet script." >> $log
 
   ## run network test and allow time to run
   bash /home/pi/check_internet.sh
-  sleep 12
-
+  sleep 15
+  
+  echo >> $log
   echo $(date '+%m-%d-%Y %T') "Restarting wlan0." >> $log
   
   ## restart wlan0 interface
