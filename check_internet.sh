@@ -82,8 +82,8 @@ httpreq()
   ## Test HTTP connection
   case "$(curl -s --max-time 2 -I $checkdomain | sed 's/^[^ ]*  *\([0-9]\).*/\1/; 1q')" in
   [23])  echo "Check HTTP connection           [ SUCCESS ]" >> $log;;
-  5)     echo "Check HTTP connection           [ FAIL    ]" >> $log; exit 1;;
-  *)     echo "Check HTTP connection           [ FAIL    ]" >> $log; exit 1;;
+  5)     echo "Check HTTP connection           [ FAIL    ]" >> $log;;
+  *)     echo "Check HTTP connection           [ FAIL    ]" >> $log;;
   esac
 #  exit 0
 }
