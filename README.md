@@ -19,4 +19,7 @@ All relevant output is logged to an external file 'wifi.log.'
 Written for use with the pitft 2.2" display. Allows programs and/or commands to be called from the 6 dusplay buttons.
 
 (4) log_reset.sh (Bash)
-A simple script to backup and reset the wifi log - easy to convert to automated version, or for using with other logs.
+A simple script to backup and reset the wifi log - easy to convert for using with other logs.
+
+(5) auto_logbackup.sh (Bash)
+An automated version of script (4) log_reset.sh - easy to convert for using with other logs.
