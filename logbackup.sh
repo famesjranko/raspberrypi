@@ -81,3 +81,4 @@ if [ $lines_reset == 1 ]
 fi
 
 echo ""
+exit 0
