@@ -3,7 +3,10 @@
 Date=$(date '+%m-%d-%Y')
 
 ## log file location
-log="/home/pi/wifi.log"
+logheader="/home/pi/wifi.log"
+
+## log header
+header="### wifi log"
 
 ## log backup destinateion
 backup="/home/pi/wifi.log."$Date
@@ -53,7 +56,7 @@ fi
 
 # reset log
 echo "resetting wifi.log . . ."
-echo "### wifi log" > $log
+echo $logheader > $log
 
 sleep 1
 echo ""
