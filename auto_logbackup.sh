@@ -26,7 +26,7 @@ backup="wifi.log."$date
 line_count=$(< $log wc -l)
 
 ## exit on empty log - no need to backup                                                                                
-if [ line_count -eq 1 ]                                                                                                   
+if [ line_count == 1 ]                                                                                                   
   then
     exit 0
 fi
