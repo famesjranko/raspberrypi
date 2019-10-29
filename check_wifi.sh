@@ -1,11 +1,11 @@
 #!/bin/bash
 
-## to send email on connection loss and reestablishment
-## uncomment mails sections and install 'mailutils' and
-## run 'dpkg-reconfigure exim4-config' wizard to setup
-## mail services. Otherwise, leave commented out.
+##    to send email on connection reestablishment 
+##    uncomment mail sections, install 'mailutils', 
+##    and run the 'dpkg-reconfigure exim4-config' 
+##    wizard to setup mail services
 
-## admin email address - add email
+## admin email address - add your email
 #email="your@email.com"
 
 ## log file location - create this manually
@@ -72,8 +72,8 @@ do
       ## email connection re-established
       #mail -s "pi-zero W [ CONNECTION WENT DOWN, BACKUP! ]" $email <<< "pi connection went down, but is back up!"
 
-      ## exit loop successfully
-      exit 0
+      ## exit loop
+      break
   fi
 
   ## increment count
