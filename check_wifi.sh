@@ -36,7 +36,6 @@ do
   echo "" >> $log
   if [ $count -lt 1 ]
     then
-      #mail -s "pi-zero W [DOWN]" $email <<< "pi connection down"
       echo $(date '+%m-%d-%Y %T') "Network connection is down." >> $log
       echo $(date '+%m-%d-%Y %T') "Running check internet script." >> $log
       
@@ -63,7 +62,7 @@ do
   if [ $pingtest -eq 0 ]
   then
     ## success, connection back up!
-    #mail -s "pi-zero W [UP]" $email <<< "pi connection back up!"
+    #mail -s "pi-zero W [ CONNECTION LOSS ]" $email <<< "pi connection was down, but back up!"
     echo $(date '+%m-%d-%Y %T') "Network connection re-established." >> $log
     echo $(date '+%m-%d-%Y %T') "Running check internet script again." >> $log
     
