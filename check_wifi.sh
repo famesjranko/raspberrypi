@@ -3,7 +3,7 @@
 ## to send email on connection loss and reestablishment
 ## uncomment mails sections and install 'mailutils' and
 ## run 'dpkg-reconfigure exim4-config' wizard to setup
-## mail services.  Otherwise, leave commented out.
+## mail services. Otherwise, leave commented out.
 
 ## admin email address - add email
 #email="your@email.com"
@@ -70,7 +70,7 @@ do
       sleep 15
 
       ## email connection re-established
-      #mail -s "pi-zero W [ CONNECTION WAS LOST ]" $email <<< "pi connection went down, but is back up!"
+      #mail -s "pi-zero W [ CONNECTION WENT DOWN, BACKUP! ]" $email <<< "pi connection went down, but is back up!"
 
       ## exit loop successfully
       exit 0
