@@ -1,26 +1,27 @@
 #!/bin/bash
 
-## Only choose one:
+##    Only choose one:
 ##    Set local router gateway address,
 ##    or have it set automagically via /sbin/ip route.
 #router=192.168.1.1
 router=`/sbin/ip route | awk '/default/ { print $3 }'`
 
-## Only choose one:
-##    Choose preferred upstream dns address,
+##    Only choose one:
+##    Preferred upstream dns address,
 ##    or have it set automagically via /etc/resolv.conf
 #checkdns=8.8.8.8
 #checkdns=1.1.1.1
 #checkdns=9.9.9.9
 checkdns=`cat /etc/resolv.conf | awk '/nameserver/ { print $2 }'`
 
-## Only choose one:
+##    Only choose one:
 ##    Preferred domain address
 checkdomain=google.com
 #checkdomain=facebook.com
 #checkdomain=yahoo.com
 
 ## log location - create this manually
+## Using same log as wifi_check.sh for simplicity
 log='/home/pi/wifi.log'
 
 ## Log date/time of execution
@@ -105,5 +106,5 @@ if [ $? -eq 0 ]
     pingnet
     portscan
     httpreq
-    exit 0
+    #exit 1
 fi
