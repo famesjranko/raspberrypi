@@ -25,7 +25,7 @@ log='/home/pi/wifi.log'
 
 ## Log date/time of execution
 echo >> $log
-echo "script exectuted:    " $(date '+%m-%d-%Y %T') >> $log
+printf "%-32s%-11s%b\n" "script exectuted:" "$(date '+%m-%d-%Y %T')" >> $log
 
 ## Test functions
 interfacestate()
@@ -34,9 +34,9 @@ interfacestate()
   wlan0_state=$(cat /sys/class/net/wlan0/operstate)
   if [ $wlan0_state == "up" ]
     then
-      echo "wlan0                           [ UP      ]" >> $log
+      printf "%-32s%-11s%b\n" "Wlan0" "[ UP      ]" >> $log
     else
-      echo "wlan0                           [ DOWN    ]" >> $log
+      printf "%-32s%-11s%b\n" "Wlan0" "[ DOWN    ]" >> $log
   fi
 }
 
@@ -44,9 +44,9 @@ portscan()
 {
   ## Test connection on port 80
   if nc -zw1 $checkdomain  80; then
-    echo "Scan Port 80                    [ SUCCESS ]" >> $log
+    printf "%-32s%-11s%b\n" "Scan Port 80" "[ SUCCESS ]" >> $log
   else
-    echo "Scan port 80                    [ FAIL    ]" >> $log
+    printf "%-32s%-11s%b\n" "Scan Port 80" "[ FAIL    ]" >> $log
   fi
 }
 
@@ -57,10 +57,9 @@ pingnet()
 
   if [ $? -eq 0 ]
     then
-      echo "Check access to $checkdomain      [ SUCCESS ]" >> $log
+      printf "%-32s%-11s%b\n" "Check access to $checkdomain" "[ SUCCESS ]" >> $log
     else
-      echo "Check access to $checkdomain      [ FAIL    ]" >> $log
-#      exit 1
+      printf "%-32s%-11s%b\n" "Check access to $checkdomain" "[ FAIL    ]" >> $log
   fi
 }
 
@@ -68,12 +67,11 @@ pingdns()
 {
   ## Test connection to DNS server
   ping $checkdns -c 4
-    if [ $? -eq 0 ]
+  if [ $? -eq 0 ]
     then
-      echo "Check DNS ($checkdns)        [ SUCCESS ]" >> $log
+      printf "%-32s%-11s%b\n" "Check DNS ($checkdns)" "[ SUCCESS ]" >> $log
     else
-      echo "Check DNS ($checkdns)        [ FAIL    ]" >> $log
-#     exit 1
+      printf "%-32s%-11s%b\n" "Check DNS ($checkdns)" "[ FAIL    ]" >> $log
   fi
 }
 
@@ -85,7 +83,6 @@ httpreq()
   5)     echo "Check HTTP connection           [ FAIL    ]" >> $log;;
   *)     echo "Check HTTP connection           [ FAIL    ]" >> $log;;
   esac
-#  exit 0
 }
 
 ## Ping gateway first to confirm LAN connection
@@ -93,20 +90,20 @@ ping $router -c 4
 
 ## Ping successful if returns 0
 if [ $? -eq 0 ]
-then
-  interfacestate
-  echo "Ping Gateway ($router)     [ SUCCESS ]" >> $log
-  pingdns
-  pingnet
-  portscan
-  httpreq
-  exit 0
-else
-  interfacestate
-  echo "Ping Gateway ($router)     [ FAIL    ]" >> $log
-  pingdns
-  pingnet
-  portscan
-  httpreq
-#  exit 1
+  then
+    interfacestate
+    printf "%-32s%-11s%b\n" "Ping Gateway ($router)" "[ SUCCESS ]" >> $log
+    pingdns
+    pingnet
+    portscan
+    httpreq
+    exit 0
+  else
+    interfacestate
+    printf "%-32s%-11s%b\n" "Ping Gateway ($router)" "[ FAIL    ]" >> $log
+    pingdns
+    pingnet
+    portscan
+    httpreq
+    exit 0
 fi
