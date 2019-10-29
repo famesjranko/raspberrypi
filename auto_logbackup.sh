@@ -22,6 +22,15 @@ fi
 ## backup log name
 backup="wifi.log."$date
 
+## check log has been written to - empty log returns 1                                                                  
+line_count=$(< $log wc -l)
+
+## exit on empty log - no need to backup                                                                                
+if [ line_count -eq 1 ]                                                                                                   
+  then
+    exit 0
+fi
+
 ## make sure backup log hasn't been made today
 exists=$(find "$dir" -name "$backup")
 
