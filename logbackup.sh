@@ -16,7 +16,6 @@ dir="/home/pi/logs/"
 if [ ! -d "$dir" ]
   then
     mkdir -p $dir
-    echo "1"
 fi
 
 ## backup log name
@@ -60,7 +59,7 @@ echo "resetting wifi.log . . ."
 echo $header > $log
 
 sleep 1
-echo ""
+echo
 
 ## count lines in logs to confirm reset - return 1 expected
 lines_reset=$(< $log wc -l)
@@ -80,5 +79,6 @@ if [ $lines_reset == 1 ]
     echo "      reset log             [ FAIL    ]"
 fi
 
-echo ""
+echo
+
 exit 0
