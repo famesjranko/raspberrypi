@@ -1,12 +1,21 @@
 #!/bin/bash
 
+## to send email on connection loss and reestablishment
+## uncomment mails sections and install 'mailutils' and 
+## run 'dpkg-reconfigure exim4-config' wizard to setup 
+## mail services.  Otherwise, leave commented out.
+
+## admin email address - add email
+#email="your@email.com"
+
 ## log file location - create this manually
 log="/home/pi/wifi.log"
 
 ## loop counter
 count=0
 
-## router address
+## router address - either set manually, or use default
+## address from /sbin/ip
 #router=`/sbin/ip route | awk '/default/ { print $3 }'`
 router=192.168.20.1
 
@@ -27,6 +36,7 @@ do
   echo "" >> $log
   if [ $count -lt 1 ]
     then
+      #mail -s "pi-zero W [DOWN]" $email <<< "pi connection down"
       echo $(date '+%m-%d-%Y %T') "Network connection is down." >> $log
       echo $(date '+%m-%d-%Y %T') "Running check internet script." >> $log
       
@@ -53,6 +63,7 @@ do
   if [ $pingtest -eq 0 ]
   then
     ## success, connection back up!
+    #mail -s "pi-zero W [UP]" $email <<< "pi connection back up!"
     echo $(date '+%m-%d-%Y %T') "Network connection re-established." >> $log
     echo $(date '+%m-%d-%Y %T') "Running check internet script again." >> $log
     
