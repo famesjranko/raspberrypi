@@ -37,13 +37,13 @@ exists=$(find "$dir" -name "$backup")
 ## if today's log already exists, add timestamp, otherwise use date only
 if [ "$exists" == "$dir$backup" ]
   then
-    ## create log backup file with timestamp
+    ## create log backup file, date and timestamp
     touch $dir$backup.$time
 
     ## backup log
     cp $log $dir$backup.$time
   else
-    ## create log backup file
+    ## create log backup file, date only
     touch $dir$backup
 
     ## backup log
