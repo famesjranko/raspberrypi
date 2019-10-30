@@ -38,7 +38,7 @@ fi
 
 ## backup log
 echo "backing up latest log to: " $backup
-cp $log $backup
+cat $log > $backup
 sleep 1
 
 ## confirm backup copy successful
