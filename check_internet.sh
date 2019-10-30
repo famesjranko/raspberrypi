@@ -27,6 +27,7 @@ log='/home/pi/wifi.log'
 ## Log date/time of execution
 echo >> $log
 printf "%-32s%-11s%b\n" "script exectuted:" "$(date '+%m-%d-%Y %T')" >> $log
+echo >> $log
 
 ## Test functions
 interfacestate()
@@ -89,6 +90,7 @@ httpreq()
 publicip()
 {
   publicaddress=$(curl -s checkip.amazonaws.com)
+  echo >> $log
   printf "%-32s%-15s%b\n" "Public ip: " "$publicaddress" >> $log
 }
 
