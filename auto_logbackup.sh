@@ -38,10 +38,10 @@ exists=$(find "$dir" -name "$backup")
 if [ "$exists" == "$dir$backup" ]
   then
     ## backup log with date and timestamp
-    cat $log >> $dir$backup.$time
+    cat $log > $dir$backup.$time
   else
     ## backup log with date only
-    cat $log >> $dir$backup
+    cat $log > $dir$backup
 fi
 
 ## confirm backup copy successful
