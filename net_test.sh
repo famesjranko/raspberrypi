@@ -58,7 +58,6 @@ pingnet()
       printf "%-32s%-11s%b\n" "Check access to $checkdomain" "[ SUCCESS ]"
     else
       printf "%-32s%-11s%b\n" "Check access to $checkdomain" "[ FAIL    ]"
-#      exit 1
   fi
 }
 
@@ -71,7 +70,6 @@ pingdns()
       printf "%-32s%-11s%b\n" "Check DNS ($checkdns)" "[ SUCCESS ]"
     else
       printf "%-32s%-11s%b\n" "Check DNS ($checkdns)" "[ FAIL    ]"
-#     exit 1
   fi
 }
 
@@ -83,7 +81,6 @@ httpreq()
   5)     echo "Check HTTP connection           [ FAIL    ]";;
   *)     echo "Check HTTP connection           [ FAIL    ]";;
   esac
-#  exit 0
 }
 
 publicip()
@@ -107,7 +104,6 @@ then
   portscan
   httpreq
   publicip
-  exit 0
 else
   interfacestate
   printf "%-32s%-11s%b\n" "Ping Gateway ($router)" "[ FAIL    ]"
@@ -115,5 +111,8 @@ else
   pingnet
   portscan
   httpreq
-#  exit 1
 fi
+
+exit 0
+
+
