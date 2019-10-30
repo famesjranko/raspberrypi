@@ -86,6 +86,12 @@ httpreq()
   esac
 }
 
+publicip()
+{
+  publicaddress=$(curl -s checkip.amazonaws.com)
+  printf "%-32s%-15s%b\n" "Public ip: " "$publicaddress" >> $log
+}
+
 ## Ping gateway first to confirm LAN connection
 ping $router -c 4
 
@@ -98,6 +104,7 @@ if [ $? -eq 0 ]
     pingnet
     portscan
     httpreq
+    publicip
     exit 0
   else
     interfacestate
