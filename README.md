@@ -35,7 +35,7 @@ A simple script to backup and reset the wifi log - easy to convert for using wit
 
 An automated version of script (4) 'logbackup.sh' - also easy to convert for using with other logs.
 
-(6) net_test.sj (Bash)
+(6) net_test.sh (Bash)
 
 A console version of script (1) check_internet.sh that doesn't includie logging. It runs test silents and simply outputs results to
 the console. 
