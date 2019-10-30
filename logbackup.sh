@@ -29,19 +29,16 @@ if [ "$exists" == "$backup" ]
   then
     read -n1 -p "today's log exists press '1' to overwrite '2' to add timestamp or '3' to exit" ans
     case $ans in
-      1) echo && echo "continuing with log overwrite . . ."; touch $backup;;
-      2) echo && echo "adding timestamp to filename . . ."; backup=$backup.$time; touch $backup ;;
+      1) echo && echo "continuing with log overwrite . . ." ;;
+      2) echo && echo "adding timestamp to filename . . ."; backup=$backup.$time ;;
       3) echo && echo "exiting . . ."; exit ;;
       *) echo && echo "unknown answer . . . exiting to be safe"; exit ;;
     esac
-  else
-    ## create log backup file
-    touch $backup
 fi
 
 ## backup log
 echo "backing up latest log to: " $backup
-cp $log $backup
+cat $log >> $backup
 sleep 1
 
 ## confirm backup copy successful
