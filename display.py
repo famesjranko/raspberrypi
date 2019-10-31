@@ -64,18 +64,23 @@ while True:
         ## start p1 - no hold needed
         elif p1_start.is_pressed:
             proc = subprocess.Popen(p1, shell=True, preexec_fn=os.setsid)
+            # print 'finished . . .'
         ## start p2 - no hold needed
         elif p2_start.is_pressed:
             proc = subprocess.Popen(p2, shell=True, preexec_fn=os.setsid)
+            # print 'finished . . .'
         ## start p3 - no hold needed
         elif p3_start.is_pressed:
             proc = subprocess.Popen(p3, shell=True, preexec_fn=os.setsid)
+            # print 'finished . . .'
         ## start p4 - no hold needed
         elif p4_start.is_pressed:
             proc = subprocess.Popen(p4, shell=True, preexec_fn=os.setsid)
+            # print 'finished . . .'
     ## if any pressed and program running, kill
     else:
         if run_halt.is_pressed or run_reboot.is_pressed or p1_start.is_pressed or p2_start.is_pressed or p3_start.is_pressed or p4_start.is_pressed:
+            # print 'program killed . . .'
             os.killpg(proc.pid, signal.SIGTERM)
             proc = None
 
