@@ -22,7 +22,7 @@ checkdomain=google.com
 
 ## date/time of execution
 echo
-printf "%-21s%-8s%b\n" "script exectuted:" "$(date '+%m-%d-%Y %T')"
+printf "%-21s%-19s%b\n" "script exectuted:" "$(date '+%m-%d-%Y %T')"
 echo
 
 ## Test functions
@@ -32,9 +32,9 @@ interfacestate()
   wlan0_state=$(cat /sys/class/net/wlan0/operstate)
   if [ $wlan0_state == "up" ]
     then
-      printf "%-21s%-8s%b\n" "Wlan0" "[ PASS ]"
+      printf "%-32s%-8s%b\n" "Wlan0" "[ PASS ]"
     else
-      printf "%-21s%-8s%b\n" "Wlan0" "[ FAIL ]"
+      printf "%-32s%-8s%b\n" "Wlan0" "[ FAIL ]"
   fi
 }
 
@@ -42,9 +42,9 @@ portscan()
 {
   ## Test connection on port 80
   if nc -zw1 $checkdomain  80; then
-    printf "%-21s%-8s%b\n" "Port 80" "[ PASS ]"
+    printf "%-32s%-8s%b\n" "Port 80" "[ PASS ]"
   else
-    printf "%-21s%-8s%b\n" "Port 80" "[ FAIL ]"
+    printf "%-32s%-8s%b\n" "Port 80" "[ FAIL ]"
   fi
 }
 
@@ -55,9 +55,9 @@ pingnet()
 
   if [ $? -eq 0 ]
     then
-      printf "%-21s%-8s%b\n" "Access $checkdomain" "[ PASS ]"
+      printf "%-32s%-8s%b\n" "Access $checkdomain" "[ PASS ]"
     else
-      printf "%-21s%-8s%b\n" "Access $checkdomain" "[ FAIL ]"
+      printf "%-32s%-8s%b\n" "Access $checkdomain" "[ FAIL ]"
   fi
 }
 
@@ -67,9 +67,9 @@ pingdns()
   ping $checkdns -c 4 > /dev/null 2>&1
     if [ $? -eq 0 ]
     then
-      printf "%-21s%-8s%b\n" "Access DNS ($checkdns)" "[ PASS ]"
+      printf "%-32s%-8s%b\n" "Access DNS ($checkdns)" "[ PASS ]"
     else
-      printf "%-21s%-8s%b\n" "Access DNS ($checkdns)" "[ FAIL ]"
+      printf "%-32s%-8s%b\n" "Access DNS ($checkdns)" "[ FAIL ]"
   fi
 }
 
@@ -77,9 +77,9 @@ httpreq()
 {
   ## Test HTTP connection
   case "$(curl -s --max-time 2 -I $checkdomain | sed 's/^[^ ]*  *\([0-9]\).*/\1/; 1q')" in
-  [23])  echo "Access HTTP           [ PASS ]";;
-  5)     echo "Access HTTP           [ FAIL ]";;
-  *)     echo "Access HTTP           [ FAIL ]";;
+  [23])  printf "%-32s%-8s%b\n" "Access HTTP" "[ PASS ]";;
+  5)     printf "%-32s%-8s%b\n" "Access HTTP" "[ FAIL ]";;
+  *)     printf "%-32s%-8s%b\n" "Access HTTP" "[ FAIL ]";;
   esac
 }
 
@@ -87,7 +87,7 @@ publicip()
 {
   pipaddress=$(curl -s checkip.amazonaws.com)
   echo
-  printf "%-21s%-8s%b\n" "Public IPv4: " "$pipaddress"
+  printf "%-26s%-14s%b\n" "Public IPv4: " "$pipaddress"
   echo
 }
 
@@ -98,7 +98,7 @@ ping $router -c 4 > /dev/null 2>&1
 if [ $? -eq 0 ]
 then
   interfacestate
-  printf "%-21s%-8s%b\n" "Ping ($router)" "[ PASS ]"
+  printf "%-32s%-8s%b\n" "Ping ($router)" "[ PASS ]"
   pingdns
   pingnet
   portscan
@@ -106,7 +106,7 @@ then
   publicip
 else
   interfacestate
-  printf "%-21s%-8s%b\n" "Ping ($router)" "[ FAIL ]"
+  printf "%-32s%-8s%b\n" "Ping ($router)" "[ FAIL ]"
   pingdns
   pingnet
   portscan
