@@ -47,14 +47,14 @@ while True:
     ## if pressed and nothing running, run
     if proc is None:
         ## run halt - must press and and hold
-        if halt.is_pressed:		 	            
+        if run_halt.is_pressed:		 	            
             sleep(1)
-            if halt.is_pressed: 			    
+            if run_halt.is_pressed: 			    
                 os.system(halt)
         ## run reboot - must press and and hold
-        elif reboot.is_pressed:
+        elif run_reboot.is_pressed:
             sleep(1)
-            if reboot.is_pressed:
+            if run_reboot.is_pressed:
                 os.system(reboot)
         ## start p1 - no hold needed
         elif p1_start.is_pressed:
@@ -70,7 +70,7 @@ while True:
         proc = subprocess.Popen(p3, shell=True, preexec_fn=os.setsid)
     ## if any pressed and program running, kill
     else:                           
-        if p_stop.is_pressed or halt.is_pressed or reboot.is_pressed or p1_start.is_pressed or p2_start.is_pressed or p3_start.is_pressed or p4_start.is_pressed:
+        if p_stop.is_pressed or run_halt.is_pressed or run_reboot.is_pressed or p1_start.is_pressed or p2_start.is_pressed or p3_start.is_pressed or p4_start.is_pressed:
             os.killpg(proc.pid, signal.SIGTERM)
             proc = None
     
