@@ -20,9 +20,6 @@ checkdomain=google.com
 #checkdomain=facebook.com
 #checkdomain=yahoo.com
 
-## date/time of execution
-printf "%-21s%-19s%b\n" "script exectuted:" "$(date '+%m-%d-%Y %T')"
-
 ## Test functions
 interfacestate()
 {
@@ -91,23 +88,23 @@ devicestats()
 {
   ## network
   interfacestate
+  echo
+  printf "%-40s%b\n" "Essid: $(iwgetid -r)"
+  printf "%-20s%20s%b\n" "$(iwconfig wlan0  | grep 'Bit Rate=' |  awk '{print $1, $2, $3}')" "$(iwconfig wlan0  | grep 'Bit Rate=' |  awk '{print $4, $5, $6}')"
+  printf "%-4s%-24s%12s%b\n" "RX:" "$(ifconfig wlan0 | awk '/RX packets/ { print $2, $3, $6, $7 }')" "$(ifconfig wlan0 | awk '/RX errors/ { print $2,$3}')"
+  printf "%-4s%-24s%12s%b\n" "TX:" "$(ifconfig wlan0 | awk '/TX packets/ { print $2, $3, $6, $7 }')" "$(ifconfig wlan0 | awk '/TX errors/ { print $2,$3}')"
   publicip
-  printf "%15s%-10s%15s%b\n" "Recieved (RX): " "$(ifconfig wlan0 | awk '/RX packets/ { print $6, $7 }')" "$(ifconfig wlan0 | awk '/RX errors/ { print $2,$3}')"
- # printf "%40s%b\n" "$(ifconfig wlan0 | awk '/RX errors/ { print $2,$3}')"
-  printf "%15s%-10s%15s%b\n"     "Sent (TX): " "$(ifconfig wlan0 | awk '/TX packets/ { print $6, $7 }')" "$(ifconfig wlan0 | awk '/TX errors/ { print $2,$3}')"
- # printf "%40s%b\n" "$(ifconfig wlan0 | awk '/TX errors/ { print $2,$3}')"
 
   ## cpu
-  printf "%-30s%10s%b\n" "CPU min MHz:" "$(lscpu | awk '/CPU min MHz:/ { print $4 }')"
-  printf "%-30s%10s%b\n" "CPU max MHz:" "$(lscpu | awk '/CPU max MHz:/ { print $4 }')"
-  printf "%-10s%-12s%b\n" "CPU temp:" "$(vcgencmd measure_temp | cut -c 6-9)"
-  printf "%6s%-14s%12s%8s%b\n" "idle: " "$(grep "cpu " /proc/stat | awk -F ' ' '{total = $2 + $3 + $4 + $5} END {print $5*100/total "%"}')" "used: " "$(grep "cpu " /proc/stat | awk -F ' ' '{total = $2 + $3 + $4 + $5} END {print $2*100/total "%"}')"
-
+  echo
+  printf "%-10s%-12s%18s%b\n" "CPU temp:" "$(vcgencmd measure_temp | cut -c 6-9)" "$(NUMCPUS=`grep ^proc /proc/cpuinfo | wc -l`; FIRST=`cat /proc/stat | awk '/^cpu / {print $5}'`; sleep 1; SECOND=`cat /proc/stat | awk '/^cpu / {print $5}'`; USED=`echo 2 k 100 $SECOND $FIRST - $NUMCPUS / - p | dc`; echo ${USED}% CPU Usage)"
+  echo
   ## kernel version
-  echo "OS:" "$(cat /etc/*-release | grep PRETTY_NAME= | cut -c 14-43)"
-  echo "Kernel:" "$(uname -mr)"
-
+  printf "%-40s%b\n" "$(cat /etc/*-release | grep PRETTY_NAME= | cut -c 14-43)"
+  printf "%-40s" "$(uname -mr)"
 }
+
+printf "%40s%b\n" "$(date '+%m-%d-%Y %T')"
 
 ## Ping gateway first to confirm LAN connection
 ping $router -c 4 > /dev/null 2>&1
