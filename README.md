@@ -37,6 +37,6 @@ An automated version of script (4) 'logbackup.sh' - also easy to convert for usi
 
 (6) net_test.sh (Bash)
 
-A console version of script (1) check_internet.sh that doesn't includie logging. It runs test silents and simply outputs results to
+A console version of script (1) check_internet.sh that doesn't include logging. It runs test silents and simply outputs results to
 the console. Formating is setup for output on pi 2.2" tft display -  I run it via script (3) display.py
 
