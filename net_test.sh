@@ -151,10 +151,45 @@ devicestats()
   printf "%-4s%-24s%12s%b\n" "TX:" "$(ifconfig wlan0 | awk '/TX packets/ { print $2, $3, $6, $7 }')" "$(ifconfig wlan0 | awk '/TX errors/ { print $2,$3}')"
   publicip
 
-  ## cpu
+  ## cpu temp and load uncoloured
+  #echo
+  #printf "%-10s%-12s%18s%b\n" "CPU temp:" "$(vcgencmd measure_temp | cut -c 6-9)" "$(NUMCPUS=`grep ^proc /proc/cpuinfo | wc -l`; FIRST=`cat /proc/stat | awk '/^cpu / {print $5}'`; sleep 1; SECOND=`cat /proc/stat | awk '/^cpu / {print $5}'`; USED=`echo 2 k 100 $SECOND $FIRST - $NUMCPUS / - p | dc`; echo ${USED}% CPU Usage)"
+  #echo
+ 
+  ## cpu temp and load coloured
+  temp=$(vcgencmd measure_temp | cut -c 6-9)                                                                                                                                                                                                   
+  load=$(NUMCPUS=`grep ^proc /proc/cpuinfo | wc -l`; FIRST=`cat /proc/stat | awk '/^cpu / {print $5}'`; sleep 1; SECOND=`cat /proc/stat | awk '/^cpu / {print $5}'`; USED=`echo 2 k 100 $SECOND $FIRST - $NUMCPUS / - p | dc`; echo ${USED})                                                                                                                                                                                                                                                
+ 
   echo
-  printf "%-10s%-12s%18s%b\n" "CPU temp:" "$(vcgencmd measure_temp | cut -c 6-9)" "$(NUMCPUS=`grep ^proc /proc/cpuinfo | wc -l`; FIRST=`cat /proc/stat | awk '/^cpu / {print $5}'`; sleep 1; SECOND=`cat /proc/stat | awk '/^cpu / {print $5}'`; USED=`echo 2 k 100 $SECOND $FIRST - $NUMCPUS / - p | dc`; echo ${USED}% CPU Usage)"
+  if [ $(echo "$temp <= 35" | bc) -eq 1 ]
+    then                                                                                                                                                                                                                                           
+      printf "%-10s%-12s" "CPU temp:" "${BLUE}${BRIGHT}$temp'C${NORMAL}"
+  elif [ $(echo "$temp <= 45" | bc) -eq 1 ]
+    then                                                                                                                                                                                                                                           
+      printf "%-10s%-12s" "CPU temp:" "${GREEN}${BRIGHT}$temp'C${NORMAL}"
+  elif [ $(echo "$temp <= 55" | bc) -eq 1 ]
+    then                                                                                                                                                                                                                                          
+      printf "%-10s%-12s" "CPU temp:" "${YELLOW}${BRIGHT}$temp'C${NORMAL}"
+  elif [ $(echo "$temp > 55" | bc) -eq 1 ]
+    then                                                                                                                                                                                                                                           
+      printf "%-10s%-12s" "CPU temp:" "${RED}${BRIGHT}$temp'C${NORMAL}"
+  fi
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          
+  if [ $(echo "$load <= 25" | bc) -eq 1 ]
+    then                                                                                                                                                                                                                                           
+      printf "%10s%18s%b\n" "" "CPU load: ${CYAN}${BRIGHT}$load${NORMAL}"
+  elif [ $(echo "$load <= 50" | bc) -eq 1 ]
+    then                                                                                                                                                                                                                                           
+      printf "%10s%18s%b\n" "" "CPU load: ${GREEN}${BRIGHT}$load${NORMAL}"
+  elif [ $(echo "$load <= 75" | bc) -eq 1 ]
+    then                                                                                                                                                                                                                                           
+      printf "%10s%18s%b\n" "" "CPU load: ${YELLOW}${BRIGHT}$load${NORMAL}"
+  elif [ $(echo "$load > 75" | bc) -eq 1 ]
+    then                                                                                                                                                                                                                                          
+      printf "%10s%18s%b\n" "" "CPU load: ${YELLOW}${BRIGHT}$load${NORMAL}"
+  fi   
   echo
+  
   ## kernel version
   printf "%-40s%b\n" "${MAGENTA}${BRIGHT}$(cat /etc/*-release | grep PRETTY_NAME= | cut -c 14-43)${NORMAL}"
   printf "%-53s" "${MAGENTA}${BRIGHT}$(uname -mr)${NORMAL}"
