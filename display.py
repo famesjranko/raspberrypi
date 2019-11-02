@@ -39,7 +39,7 @@ run_halt   = Button(4)
 halt   = "shutdown now -h
 reboot = "reboot now"
 p4     = "./home/pi/net_test.sh"
-p3     = "tail -f /var/log/pihole.log | cut -c 31-"
+p3     = "pihole -t | awk '{print $5,$7,$8}'  | cut -c -40"
 p2     = "/usr/bin/htop"
 p1     = "./home/pi/padd_mini.sh"
 
