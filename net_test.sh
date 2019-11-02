@@ -1,6 +1,6 @@
 #!/bin/bash
 
-## possible text colours
+## output colours
 BLACK=$(tput setaf 0)
 RED=$(tput setaf 1)
 GREEN=$(tput setaf 2)
@@ -42,6 +42,7 @@ checkdomain=google.com
 #checkdomain=yahoo.com
 
 ## ping LAN hosts? yes/no
+## if yes, add to hosts lists
 lan_test="no"
 
 ## ==============
@@ -65,9 +66,10 @@ hosts_name=(
 ## ==============
 ## Test functions
 ## ==============
+
 pinghost() {
   ## Test connection to internet
-  ping $2 -c 4 > /dev/null 2>&1
+  ping $2 -c 3 > /dev/null 2>&1
 
   if [ $? -eq 0 ]
     then
@@ -77,6 +79,7 @@ pinghost() {
   fi
 }
 
+## Test functions
 interfacestate()
 {
   ## Check wlan0 interface state
@@ -137,7 +140,7 @@ httpreq()
 publicip()
 {
   pipaddress=$(curl -s checkip.amazonaws.com)
-  printf "%-26s%-14s%b\n" "Public IPv4: " "${CYAN}${BRIGHT}$pipaddress${NORMAL}"
+  printf "%-26s%-14s%b\n" "Public IPv4: " "${GREEN}${BRIGHT}$pipaddress${NORMAL}"
 }
 
 devicestats()
@@ -145,61 +148,55 @@ devicestats()
   ## network
   interfacestate
   echo
-  printf "%-40s%b\n" "Essid: ${CYAN}${BRIGHT}$(iwgetid -r)${NORMAL}"
-  printf "%-20s%20s%b\n" "$(iwconfig wlan0  | grep 'Bit Rate=' |  awk '{print $1, $2, $3}')" "$(iwconfig wlan0  | grep 'Bit Rate=' |  awk '{print $4, $5, $6}')"
-  printf "%-4s%-24s%12s%b\n" "RX:" "$(ifconfig wlan0 | awk '/RX packets/ { print $2, $3, $6, $7 }')" "$(ifconfig wlan0 | awk '/RX errors/ { print $2,$3}')"
-  printf "%-4s%-24s%12s%b\n" "TX:" "$(ifconfig wlan0 | awk '/TX packets/ { print $2, $3, $6, $7 }')" "$(ifconfig wlan0 | awk '/TX errors/ { print $2,$3}')"
+  printf "%-40s%b\n" "Essid: ${GREEN}${BRIGHT}$(iwgetid -r)${NORMAL}"
+  printf "%-21s%19s%b\n" "$(iwconfig wlan0  | grep 'Bit Rate=' | awk '{print $1, $2, $3}')" "$(iwconfig wlan0 | grep 'Bit Rate=' | awk '{print $4, $5}')"
+  printf "%-3s%-25s%12s%b\n" "RX:" "$(ifconfig wlan0 | awk '/RX packets/ { print $2, $3, $6, $7 }')" "$(ifconfig wlan0 | awk '/RX errors/ { print $2,$3}')"
+  printf "%-3s%-25s%12s%b\n" "TX:" "$(ifconfig wlan0 | awk '/TX packets/ { print $2, $3, $6, $7 }')" "$(ifconfig wlan0 | awk '/TX errors/ { print $2,$3}')"
   publicip
 
-  ## cpu temp and load uncoloured
-  #echo
-  #printf "%-10s%-12s%18s%b\n" "CPU temp:" "$(vcgencmd measure_temp | cut -c 6-9)" "$(NUMCPUS=`grep ^proc /proc/cpuinfo | wc -l`; FIRST=`cat /proc/stat | awk '/^cpu / {print $5}'`; sleep 1; SECOND=`cat /proc/stat | awk '/^cpu / {print $5}'`; USED=`echo 2 k 100 $SECOND $FIRST - $NUMCPUS / - p | dc`; echo ${USED}% CPU Usage)"
-  #echo
- 
-  ## cpu temp and load coloured
-  temp=$(vcgencmd measure_temp | cut -c 6-9)                                                                                                                                                                                                   
-  load=$(NUMCPUS=`grep ^proc /proc/cpuinfo | wc -l`; FIRST=`cat /proc/stat | awk '/^cpu / {print $5}'`; sleep 1; SECOND=`cat /proc/stat | awk '/^cpu / {print $5}'`; USED=`echo 2 k 100 $SECOND $FIRST - $NUMCPUS / - p | dc`; echo ${USED})                                                                                                                                                                                                                                                
- 
+  ## cpu
+  temp=$(vcgencmd measure_temp | cut -c 6-9)
+  load=$(NUMCPUS=`grep ^proc /proc/cpuinfo | wc -l`; FIRST=`cat /proc/stat | awk '/^cpu / {print $5}'`; sleep 1; SECOND=`cat /proc/stat | awk '/^cpu / {print $5}'`; USED=`echo 2 k 100 $SECOND $FIRST - $NUMCPUS / - p | dc`; echo ${USED})
+
   echo
   if [ $(echo "$temp <= 35" | bc) -eq 1 ]
-    then                                                                                                                                                                                                                                           
-      printf "%-10s%-12s" "CPU temp:" "${BLUE}${BRIGHT}$temp'C${NORMAL}"
+    then
+      printf "%-10s%-21s" "CPU temp: " "${CYAN}${BRIGHT}10.00'C${NORMAL}"
   elif [ $(echo "$temp <= 45" | bc) -eq 1 ]
-    then                                                                                                                                                                                                                                           
-      printf "%-10s%-12s" "CPU temp:" "${GREEN}${BRIGHT}$temp'C${NORMAL}"
+    then
+      printf "%-10s%-21s" "CPU temp: " "${GREEN}${BRIGHT}$temp'C${NORMAL}"
   elif [ $(echo "$temp <= 55" | bc) -eq 1 ]
-    then                                                                                                                                                                                                                                          
-      printf "%-10s%-12s" "CPU temp:" "${YELLOW}${BRIGHT}$temp'C${NORMAL}"
+    then
+      printf "%-10s%-21s" "CPU temp: " "${YELLOW}${BRIGHT}$temp'C${NORMAL}"
   elif [ $(echo "$temp > 55" | bc) -eq 1 ]
-    then                                                                                                                                                                                                                                           
-      printf "%-10s%-12s" "CPU temp:" "${RED}${BRIGHT}$temp'C${NORMAL}"
+    then
+      printf "%-10s%-21s" "CPU temp: " "${RED}${BRIGHT}$temp'C${NORMAL}"
   fi
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          
+
   if [ $(echo "$load <= 25" | bc) -eq 1 ]
-    then                                                                                                                                                                                                                                           
-      printf "%10s%18s%b\n" "" "CPU load: ${CYAN}${BRIGHT}$load${NORMAL}"
+    then
+      printf "%17s%18s%b\n" "CPU load: " "${CYAN}${BRIGHT}$load${NORMAL}"
   elif [ $(echo "$load <= 50" | bc) -eq 1 ]
-    then                                                                                                                                                                                                                                           
-      printf "%10s%18s%b\n" "" "CPU load: ${GREEN}${BRIGHT}$load${NORMAL}"
+    then
+      printf "%17s%18s%b\n" "CPU load: " "${GREEN}${BRIGHT}$load${NORMAL}"
   elif [ $(echo "$load <= 75" | bc) -eq 1 ]
-    then                                                                                                                                                                                                                                           
-      printf "%10s%18s%b\n" "" "CPU load: ${YELLOW}${BRIGHT}$load${NORMAL}"
+    then
+      printf "%17s%18s%b\n" "CPU load: " "${YELLOW}${BRIGHT}$load${NORMAL}"
   elif [ $(echo "$load > 75" | bc) -eq 1 ]
-    then                                                                                                                                                                                                                                          
-      printf "%10s%18s%b\n" "" "CPU load: ${YELLOW}${BRIGHT}$load${NORMAL}"
-  fi   
+    then
+     printf "%17s%18s%b\n" "CPU load: " "${RED}${BRIGHT}$load${NORMAL}"
+  fi
   echo
-  
-  ## kernel version
+
+  ## kernel
   printf "%-40s%b\n" "${MAGENTA}${BRIGHT}$(cat /etc/*-release | grep PRETTY_NAME= | cut -c 14-43)${NORMAL}"
-  printf "%-53s" "${MAGENTA}${BRIGHT}$(uname -mr)${NORMAL}"
+  printf "%-52s" "${MAGENTA}${BRIGHT}$(uname -mr)${NORMAL}"
 }
 
 ## ================================
 ## execution order starts from here
 ## ================================
 
-## print date/time
 echo && echo
 printf "%40s%b\n" "$(date '+%m-%d-%Y %T')"
 
@@ -215,8 +212,6 @@ then
   portscan
   httpreq
   devicestats
-  
-  ## test LAN host connections
   if [ $lan_test == "yes" ]
   then
     sleep 5
@@ -237,6 +232,6 @@ else
 fi
 
 echo
-printf "%53s" "${YELLOW}${BRIGHT}Network test completed.${NORMAL}"
+printf "%-52s" "${YELLOW}${BRIGHT}Network test completed. ${NORMAL}"
 
 exit 0
