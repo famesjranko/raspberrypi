@@ -20,7 +20,7 @@ checkdomain=google.com
 #checkdomain=facebook.com
 #checkdomain=yahoo.com
 
-## ping LAN hosts? yes or no
+## ping LAN hosts? yes/no
 lan_test="no"
 
 ## list of LAN host IP addresses - order myst match names list
