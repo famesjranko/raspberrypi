@@ -21,7 +21,7 @@ checkdomain=google.com
 #checkdomain=yahoo.com
 
 ## ping LAN hosts? yes or no
-lan_test="yes"
+lan_test="no"
 
 ## list of LAN host IP addresses - order myst match names list
 hosts_address=(
