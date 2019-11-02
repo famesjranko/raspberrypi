@@ -147,9 +147,11 @@ devicestats()
   echo
   ## kernel version
   printf "%-40s%b\n" "${MAGENTA}${BRIGHT}$(cat /etc/*-release | grep PRETTY_NAME= | cut -c 14-43)${NORMAL}"
-  printf "%-40s" "${MAGENTA}${BRIGHT}$(uname -mr)${NORMAL}"
+  printf "%-53s" "${MAGENTA}${BRIGHT}$(uname -mr)${NORMAL}"
 }
 
+## print date/time
+echo && echo
 printf "%40s%b\n" "$(date '+%m-%d-%Y %T')"
 
 ## Ping gateway first to confirm LAN connection
@@ -165,20 +167,17 @@ then
   httpreq
   devicestats
   
+  ## test LAN host connections
   if [ $lan_test == "yes" ]
   then
     sleep 5
-    echo
-    echo
+    echo && echo
     printf "%-40s%b\n" "Pinging LAN host connections . . ."
     echo
     for index in ${!hosts_name[*]}; do
       pinghost ${hosts_name[$index]} ${hosts_address[$index]}
     done
   fi
-  
-  echo
-  printf "%40s" "${YELLOW}${BRIGHT}Network test completed . . . ${NORMAL}"
 else
   printf "%-32s%-8s%b\n" "Ping ($router)" "[ ${RED}${BRIGHT}FAIL${NORMAL} ]"
   pingdns
@@ -186,9 +185,9 @@ else
   portscan
   httpreq
   devicestats
-  
-  echo
-  printf "%40s" "${YELLOW}${BRIGHT}Network test completed . . . ${NORMAL}"
 fi
+
+echo
+printf "%53s" "${YELLOW}${BRIGHT}Network test completed.${NORMAL}"
 
 exit 0
