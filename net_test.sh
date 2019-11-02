@@ -17,6 +17,10 @@ BLINK=$(tput blink)
 REVERSE=$(tput smso)
 UNDERLINE=$(tput smul)
 
+## ============
+## test choices
+## ============
+
 ## Only choose one:
 ##    Set local router gateway address,
 ##    or have it set automagically via /sbin/ip route.
@@ -40,6 +44,10 @@ checkdomain=google.com
 ## ping LAN hosts? yes/no
 lan_test="no"
 
+## ==============
+## LAN host lists
+## ==============
+
 ## list of LAN host IP addresses - order myst match names list
 hosts_address=(
   "addreess1"
@@ -54,7 +62,9 @@ hosts_name=(
   "name3"
 )
 
+## ==============
 ## Test functions
+## ==============
 pinghost() {
   ## Test connection to internet
   ping $2 -c 4 > /dev/null 2>&1
@@ -149,6 +159,10 @@ devicestats()
   printf "%-40s%b\n" "${MAGENTA}${BRIGHT}$(cat /etc/*-release | grep PRETTY_NAME= | cut -c 14-43)${NORMAL}"
   printf "%-53s" "${MAGENTA}${BRIGHT}$(uname -mr)${NORMAL}"
 }
+
+## ================================
+## execution order starts from here
+## ================================
 
 ## print date/time
 echo && echo
