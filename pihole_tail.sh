@@ -1,7 +1,19 @@
-#!/bin/bash
+##   Output structured for 2.2" pi-tft display hat.
+##
+##   A simple looping script that mimics and colourises 
+##   the output of 'tail -f /var/log/pihole.log' for the
+##   raspberry pi 2.2" pi-tft display hat.
+##
+##   pi 2.2" pi-tft display hat device layout:
+##       ______________________
+##      | |      ____________  |
+##      | | *23 |            | |*17
+##      | | *22 |   screen   | |
+##      | | *24 |    18x40   | |
+##      | | *5  |____________| |*4
+##      |_|____________________|
 
-## colourises and prints the latest addition from 
-## /var/log/pihole.log
+#!/bin/bash
 
 ## colour list
 RED=$(tput setaf 1)
