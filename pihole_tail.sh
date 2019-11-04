@@ -61,7 +61,7 @@ do
 
   ## compare query line latest with previous
   ## - specifically needed as queries appear too quickly in log
-  if [ "$line_query2" !=  "$line_query1" ]
+  if [ "$line_query3" !=  "$line_query1" ]
     then
       ## break line up into seperate fields
       ## field 1: type
@@ -84,12 +84,12 @@ do
       fi
 
       ## update last line
-      line_query1=$line_query2
+      line_query1=$line_query3
   fi
   
   ## compare latest line with previous
   ## - has queries incl. but mostly misses them - see above
-  if [ "$line2" !=  "$line1" ]
+  if [ "$line3" !=  "$line1" ]
     then
       ## break line up into seperate fields
       ## field 1: type
@@ -180,7 +180,7 @@ do
       fi
       
       ## update previous line
-      line1=$line2
+      line1=$line3
   fi
   
   ## wait to loop again
