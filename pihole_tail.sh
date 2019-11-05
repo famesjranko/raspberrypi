@@ -162,5 +162,5 @@ do
   fi
 
   ## wait before looping
-  sleep .5
+  #sleep .5
 done
