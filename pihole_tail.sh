@@ -44,19 +44,15 @@ sleep 2
 echo
 
 ## set initial lines to emtpy
-line1="empty"
 line_query1="empty"
+line1="empty"
 
 while [ true ]
 do
-  ## grab last line of log
-  line2=$(tail -n 1 /var/log/pihole.log)
-
   ## grab last line of query only log
   line_query2=$(cat /var/log/pihole.log | grep "query" | tail -n 1)
 
-  ## grab relevant fields from lines
-  line3=$(echo $line2 | awk '{print $5 , $6 , $8}')
+  ## grab relevant fields from line
   line_query3=$(echo $line_query2 | awk '{print $5 , $6 , $8}')
 
   ## compare query line latest with previous
@@ -87,9 +83,15 @@ do
       line_query1=$line_query3
   fi
   
+  ## grab last line of log
+  line2=$(tail -n 1 /var/log/pihole.log)
+  
+  ## grab relevant fields from line
+  line3=$(echo $line2 | awk '{print $5 , $6 , $8}')
+  
   ## compare latest line with previous
   ## - has queries incl. but mostly misses them - see above
-  if [ "$line3" !=  "$line1" ]
+  if [ "$line3" !=  "$line1" ] && [ "$line3" != "$line_query1" ]
     then
       ## break line up into seperate fields
       ## field 1: type
@@ -130,7 +132,7 @@ do
             else
               printf "%b\n%s" "${YELLOW}${BRIGHT}$first${NORMAL} $second"
           fi
-      elif [ "$first" == "query[A]" ]
+      elif [ "$first" == "query[A]" ] || [ "$first" == "query[PTR]" ] || [ "$first" == "query[AAAA]" ]
         then
           if [ $(echo "$second_len >= 19" | bc) -eq 1 ]
             then
@@ -139,34 +141,7 @@ do
             else
               printf "%s%b\n" "${MAGENTA}${BRIGHT}query${NORMAL} $second $third"
           fi
-      elif [ "$first" == "query[PTR]" ]
-        then
-          if [ $(echo "$second_len >= 19" | bc) -eq 1 ]
-            then
-              second=$(echo $second | cut -c -16)
-              printf "%s%s%b\n" "${MAGENTA}${BRIGHT}query${NORMAL} $second..." " $third"
-            else
-              printf "%b\n%s" "${MAGENTA}${BRIGHT}query${NORMAL} $second $third"
-          fi
-      elif [ "$first" == "query[AAAA]" ]
-        then
-          if [ $(echo "$second_len >= 19" | bc) -eq 1 ]
-            then
-              second=$(echo $second | cut -c -16)
-              printf "%s%s%b\n" "${MAGENTA}${BRIGHT}query${NORMAL} $second..." " $third"
-            else
-              printf "%b\n%s" "${MAGENTA}${BRIGHT}query${NORMAL} $second $third"
-          fi
-      elif [ "$first" == "/etc/pihole/gravity.list" ]
-        then
-          if [ $(echo "$second_len >= 32" | bc) -eq 1 ]
-            then
-              second=$(echo $second | cut -c -29)
-              printf "%b\n%s" "${RED}${BRIGHT}blocked${NORMAL} $second..."
-            else
-              printf "%b\n%s" "${RED}${BRIGHT}blocked${NORMAL} $second"
-          fi
-      elif [ "$first" ==  "/etc/pihole/black.list" ]
+      elif [ "$first" == "/etc/pihole/gravity.list" ] || [ "$first" ==  "/etc/pihole/black.list" ]
         then
           if [ $(echo "$second_len >= 32" | bc) -eq 1 ]
             then
@@ -184,5 +159,5 @@ do
   fi
   
   ## wait to loop again
-  sleep 1
+  sleep .5
 done
