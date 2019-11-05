@@ -58,7 +58,8 @@ do
 
   ## compare query line latest with previous
   ## - specifically needed as queries appear too quickly in log
-  if [ "$line_query3" !=  "$line_query1" ]
+  ## - test for 'wpad.LandOfOz' is specific to my network; can remove
+  if [ "$line_query3" !=  "$line_query1" ] && [ "$(echo $line_query3 | awk '{print $2}')" != "wpad.LandOfOz" ]
     then
       ## atomise line fields
       ## field 1: type
@@ -92,7 +93,8 @@ do
 
   ## compare latest line with previous
   ## - has queries incl. but mostly misses them - see above
-  if [ "$line3" !=  "$line1" ] && [ "$line3" != "$line_query1" ]
+  ## - test for 'wpad.LandOfOz' is specific to my network; can remove
+  if [ "$line3" !=  "$line1" ] && [ "$line3" != "$line_query1" ] && [ "$(echo $line3 | awk '{print $2}')" != "wpad.LandOfOz" ]
     then
       ## atomise line fields
       ## field 1: type
