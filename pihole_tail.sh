@@ -31,9 +31,9 @@ sleep 1
 echo
 printf "%-15s%10s%b\n" "colour key:" ""
 sleep .4
-printf "%-16s%10s%b\n" "  replies:" "${GREEN}${BRIGHT}GREEN${NORMAL}"
+printf "%-16s%10s%b\n" "  replies:" "${CYAN}${BRIGHT}GREEN${NORMAL}"
 sleep .4
-printf "%-16s%10s%b\n" "  forwards:" "${CYAN}${BRIGHT}CYAN${NORMAL}"
+printf "%-16s%10s%b\n" "  forwards:" "${GREEN}${BRIGHT}CYAN${NORMAL}"
 sleep .4
 printf "%-16s%10s%b\n" "  cached:" "${YELLOW}${BRIGHT}YELLOW${NORMAL}"
 sleep .4
@@ -108,18 +108,18 @@ do
           if [ $(echo "$second_len >= 34" | bc) -eq 1 ]
             then
               second=$(echo $second | cut -c -31)
-              printf "%b\n%s" "${GREEN}${BRIGHT}$first${NORMAL} $second..."
+              printf "%b\n%s" "${CYAN}${BRIGHT}$first${NORMAL} $second..."
             else
-              printf "%b\n%s" "${GREEN}${BRIGHT}$first${NORMAL} $second"
+              printf "%b\n%s" "${CYAN}${BRIGHT}$first${NORMAL} $second"
           fi
       elif [ "$first" == "forwarded" ]
         then
           if [ $(echo "$second_len >= 30" | bc) -eq 1 ]
             then
               second=$(echo $second | cut -c -27)
-              printf "%b\n%s" "${CYAN}${BRIGHT}$first${NORMAL} $second..."
+              printf "%b\n%s" "${GREEN}${BRIGHT}$first${NORMAL} $second..."
             else
-              printf "%b\n%s" "${CYAN}${BRIGHT}$first${NORMAL} $second"
+              printf "%b\n%s" "${GREEN}${BRIGHT}$first${NORMAL} $second"
           fi
       elif [ "$first" == "cached" ]
         then
