@@ -74,14 +74,17 @@ do
 
       ## determine field 2 length
       q_second_len=${#q_second}
-
+      
+      ## start newline
+      printf "%b\n"
+      
       ## colourised print
-      if [ $(echo "$q_second_len >= 19" | bc) -eq 1 ]
+      if [ $(echo "$q_second_len >= 20" | bc) -eq 1 ]
         then
-          q_second=$(echo $q_second | cut -c -16)
-          printf "%s%s%b\n" "${MAGENTA}${BRIGHT}query${NORMAL} $q_second..." " $q_third"
+          q_second=$(echo $q_second | cut -c -17)
+          printf "%-6s%-20s%14s" "${MAGENTA}${BRIGHT}query ${NORMAL}" "$q_second..." "$q_third"
         else
-          printf "%s%s%b\n" "${MAGENTA}${BRIGHT}query${NORMAL} $q_second" " $q_third"
+          printf "%-6s%-20s%14s" "${MAGENTA}${BRIGHT}query ${NORMAL}" "$q_second" "$q_third"
       fi
 
       ## update last query line
@@ -106,54 +109,57 @@ do
       ## determine field 2 length
       second_len=${#second}
 
+      ## start newline
+      printf "%b\n"
+
       ## colourised print
       if [ "$first" = "reply" ]
         then
           if [ $(echo "$second_len >= 34" | bc) -eq 1 ]
             then
               second=$(echo $second | cut -c -31)
-              printf "%b\n%s" "${CYAN}${BRIGHT}$first${NORMAL} $second..."
+              printf "%s" "${CYAN}${BRIGHT}$first${NORMAL} $second..."
             else
-              printf "%b\n%s" "${CYAN}${BRIGHT}$first${NORMAL} $second"
+              printf "%s" "${CYAN}${BRIGHT}$first${NORMAL} $second"
           fi
       elif [ "$first" = "forwarded" ]
         then
           if [ $(echo "$second_len >= 30" | bc) -eq 1 ]
             then
               second=$(echo $second | cut -c -27)
-              printf "%b\n%s" "${GREEN}${BRIGHT}$first${NORMAL} $second..."
+              printf "%s" "${GREEN}${BRIGHT}$first${NORMAL} $second..."
             else
-              printf "%b\n%s" "${GREEN}${BRIGHT}$first${NORMAL} $second"
+              printf "%s" "${GREEN}${BRIGHT}$first${NORMAL} $second"
           fi
       elif [ "$first" = "cached" ]
         then
           if [ $(echo "$second_len >= 33" | bc) -eq 1 ]
             then
               second=$(echo $second | cut -c -30)
-              printf "%b\n%s" "${YELLOW}${BRIGHT}$first${NORMAL} $second..."
+              printf "%s" "${YELLOW}${BRIGHT}$first${NORMAL} $second..."
             else
-              printf "%b\n%s" "${YELLOW}${BRIGHT}$first${NORMAL} $second"
+              printf "%s" "${YELLOW}${BRIGHT}$first${NORMAL} $second"
           fi
       elif [ "$first" = "query[A]" -o "$first" = "query[PTR]" -o "$first" = "query[AAAA]" ]
         then
-          if [ $(echo "$second_len >= 19" | bc) -eq 1 ]
+          if [ $(echo "$second_len >= 20" | bc) -eq 1 ]
             then
-              second=$(echo $second | cut -c -16)
-              printf "%s%s%b\n" "${MAGENTA}${BRIGHT}query${NORMAL} $second..." " $third"
+              second=$(echo $second | cut -c -17)
+              printf "%-6s%-20s%14s" "${MAGENTA}${BRIGHT}query ${NORMAL}" "$second..." "$third"
             else
-              printf "%s%b\n" "${MAGENTA}${BRIGHT}query${NORMAL} $second $third"
+              printf "%-6s%-20s%14s" "${MAGENTA}${BRIGHT}query ${NORMAL}" "$second" "$third"
           fi
       elif [ "$first" = "/etc/pihole/gravity.list" -o "$first" = "/etc/pihole/black.list" -o "$first" = "/etc/pihole/regex.list" ]
         then
           if [ $(echo "$second_len >= 32" | bc) -eq 1 ]
             then
               second=$(echo $second | cut -c -29)
-              printf "%b\n%s" "${RED}${BRIGHT}blocked${NORMAL} $second..."
+              printf "%s" "${RED}${BRIGHT}blocked${NORMAL} $second..."
             else
-              printf "%b\n%s" "${RED}${BRIGHT}blocked${NORMAL} $second"
+              printf "%s" "${RED}${BRIGHT}blocked${NORMAL} $second"
           fi
       else
-          printf "%b\n%s" "$first $second"
+          printf "%s" "$first $second"
       fi
 
       ## update last line
