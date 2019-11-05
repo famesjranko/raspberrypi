@@ -62,7 +62,7 @@ do
   ## compare query line latest with previous
   ## - specifically needed as queries appear too quickly in log
   ## - test for 'wpad.LandOfOz' is specific to my network; can remove
-  if [ "$line_query3" !=  "$line_query1" ] && [ "$(echo $line_query3 | awk '{print $2}')" != "wpad.LandOfOz" ]
+  if [[ "$line_query3" !=  "$line_query1" && "$(echo $line_query3 | awk '{print $2}')" != "wpad.LandOfOz" ]]
     then
       ## atomise line fields
       ## field 1: type
@@ -93,7 +93,7 @@ do
   ## compare latest line proper with previous
   ## - has queries incl. but mostly misses them - see above
   ## - test for 'wpad.LandOfOz' is specific to my network; can remove
-  if [ "$line3" !=  "$line1" ] && [ "$line3" != "$line_query1" ] && [ "$(echo $line3 | awk '{print $2}')" != "wpad.LandOfOz" ]
+  if [[ "$line3" !=  "$line1" && "$line3" != "$line_query1" && "$(echo $line3 | awk '{print $2}')" != "wpad.LandOfOz" ]]
     then
       ## atomise line fields
       ## field 1: type
@@ -107,7 +107,7 @@ do
       second_len=${#second}
 
       ## colourised print
-      if [ "$first" == "reply" ]
+      if [ "$first" = "reply" ]
         then
           if [ $(echo "$second_len >= 34" | bc) -eq 1 ]
             then
@@ -116,7 +116,7 @@ do
             else
               printf "%b\n%s" "${CYAN}${BRIGHT}$first${NORMAL} $second"
           fi
-      elif [ "$first" == "forwarded" ]
+      elif [ "$first" = "forwarded" ]
         then
           if [ $(echo "$second_len >= 30" | bc) -eq 1 ]
             then
@@ -125,7 +125,7 @@ do
             else
               printf "%b\n%s" "${GREEN}${BRIGHT}$first${NORMAL} $second"
           fi
-      elif [ "$first" == "cached" ]
+      elif [ "$first" = "cached" ]
         then
           if [ $(echo "$second_len >= 33" | bc) -eq 1 ]
             then
@@ -134,7 +134,7 @@ do
             else
               printf "%b\n%s" "${YELLOW}${BRIGHT}$first${NORMAL} $second"
           fi
-      elif [ "$first" == "query[A]" ] || [ "$first" == "query[PTR]" ] || [ "$first" == "query[AAAA]" ]
+      elif [[ "$first" = "query[A]" || "$first" = "query[PTR]" || "$first" = "query[AAAA]" ]]
         then
           if [ $(echo "$second_len >= 19" | bc) -eq 1 ]
             then
@@ -143,7 +143,7 @@ do
             else
               printf "%s%b\n" "${MAGENTA}${BRIGHT}query${NORMAL} $second $third"
           fi
-      elif [ "$first" == "/etc/pihole/gravity.list" ] || [ "$first" ==  "/etc/pihole/black.list" ]
+      elif [[ "$first" = "/etc/pihole/gravity.list" || "$first" = "/etc/pihole/black.list" ]]
         then
           if [ $(echo "$second_len >= 32" | bc) -eq 1 ]
             then
