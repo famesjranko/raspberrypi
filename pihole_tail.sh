@@ -50,10 +50,13 @@ line_query1="empty"
 ## loop forever
 while [ true ]
 do
-  ## grab last line of query only log
-  line_query2=$(cat /var/log/pihole.log | grep "query" | tail -n 1)
 
-  ## grab relevant line fields
+  ## grab last line of log proper, then grab relevant line fields
+  line2=$(tail -n 1 /var/log/pihole.log)
+  line3=$(echo $line2 | awk '{print $5 , $6 , $8}')
+  
+  ## grab last line of query only log, then grab relevant line fields
+  line_query2=$(cat /var/log/pihole.log | grep "query" | tail -n 1)
   line_query3=$(echo $line_query2 | awk '{print $5 , $6 , $8}')
 
   ## compare query line latest with previous
@@ -81,17 +84,13 @@ do
           printf "%s%s%b\n" "${MAGENTA}${BRIGHT}query${NORMAL} $q_second" " $q_third"
       fi
 
-      ## update last line
+      ## update last query line
       line_query1=$line_query3
   fi
 
-  ## grab last line of log proper
-  line2=$(tail -n 1 /var/log/pihole.log)
 
-  ## grab relevant line fields
-  line3=$(echo $line2 | awk '{print $5 , $6 , $8}')
 
-  ## compare latest line with previous
+  ## compare latest line proper with previous
   ## - has queries incl. but mostly misses them - see above
   ## - test for 'wpad.LandOfOz' is specific to my network; can remove
   if [ "$line3" !=  "$line1" ] && [ "$line3" != "$line_query1" ] && [ "$(echo $line3 | awk '{print $2}')" != "wpad.LandOfOz" ]
@@ -157,7 +156,7 @@ do
           printf "%b\n%s" "$first $second"
       fi
 
-      ## set most recent line to last
+      ## update last line
       line1=$line3
   fi
 
