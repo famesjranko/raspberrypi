@@ -161,6 +161,6 @@ do
       line1=$line3
   fi
 
-  ## wait before looping
+  ## can add a wait before looping if wanted
   #sleep .5
 done
