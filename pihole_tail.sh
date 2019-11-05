@@ -62,7 +62,7 @@ do
   ## compare query line latest with previous
   ## - specifically needed as queries appear too quickly in log
   ## - test for 'wpad.LandOfOz' is specific to my network; can remove
-  if [[ "$line_query3" !=  "$line_query1" && "$(echo $line_query3 | awk '{print $2}')" != "wpad.LandOfOz" ]]
+  if [ "$line_query3" !=  "$line_query1" -a "$(echo $line_query3 | awk '{print $2}')" != "wpad.LandOfOz" ]
     then
       ## atomise line fields
       ## field 1: type
@@ -93,7 +93,7 @@ do
   ## compare latest line proper with previous
   ## - has queries incl. but mostly misses them - see above
   ## - test for 'wpad.LandOfOz' is specific to my network; can remove
-  if [[ "$line3" !=  "$line1" && "$line3" != "$line_query1" && "$(echo $line3 | awk '{print $2}')" != "wpad.LandOfOz" ]]
+  if [ "$line3" !=  "$line1" -a "$line3" != "$line_query1" -a "$(echo $line3 | awk '{print $2}')" != "wpad.LandOfOz" ]
     then
       ## atomise line fields
       ## field 1: type
@@ -134,7 +134,7 @@ do
             else
               printf "%b\n%s" "${YELLOW}${BRIGHT}$first${NORMAL} $second"
           fi
-      elif [[ "$first" = "query[A]" || "$first" = "query[PTR]" || "$first" = "query[AAAA]" ]]
+      elif [ "$first" = "query[A]" -o "$first" = "query[PTR]" -o "$first" = "query[AAAA]" ]
         then
           if [ $(echo "$second_len >= 19" | bc) -eq 1 ]
             then
@@ -143,7 +143,7 @@ do
             else
               printf "%s%b\n" "${MAGENTA}${BRIGHT}query${NORMAL} $second $third"
           fi
-      elif [[ "$first" = "/etc/pihole/gravity.list" || "$first" = "/etc/pihole/black.list" ]]
+      elif [ "$first" = "/etc/pihole/gravity.list" -o "$first" = "/etc/pihole/black.list" -o "$first" = "/etc/pihole/regex.list" ]
         then
           if [ $(echo "$second_len >= 32" | bc) -eq 1 ]
             then
