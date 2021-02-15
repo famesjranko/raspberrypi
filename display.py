@@ -36,7 +36,7 @@ run_reboot = Button(17)
 run_halt   = Button(4)
 
 ## program/command list - set these.
-halt   = "shutdown now -h
+halt   = "shutdown now -h"
 reboot = "reboot now"
 p4     = "./home/pi/net_test.sh"
 p3     = "pihole -t | awk '{print $5,$7,$8}'  | cut -c -40"
