@@ -3,6 +3,9 @@
 ##   This is a simple python script template that can
 ##   be set to start program on boot and loops forever.
 ##
+##   Place in /etc/rc.local before exit: 
+##		    eg sudo python /home/pi/display.py &
+##
 ##   Currently implements reboot, shutdown, and program
 ##   start/stop when the respective button is pressed.
 ##
