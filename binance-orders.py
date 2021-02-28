@@ -7,6 +7,8 @@ from binance.client import Client
 from binance.exceptions import BinanceAPIException
 
 if __name__ == '__main__':
+  
+  ## requrires binance acct api key/secret
   api_key = ''
   api_secret = ''
 
