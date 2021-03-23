@@ -14,8 +14,7 @@
 from binance.client import Client
 from binance.exceptions import BinanceAPIException
 
-if __name__ == '__main__':
-  
+if __name__ == '__main__':  
   ## requrires binance acct api key/secret
   api_key = ''        # <- need to create/set
   api_secret = ''     # <- need to create/set
@@ -53,7 +52,6 @@ if __name__ == '__main__':
           print('  ' + str(count) + ': ' + "\033[1;32;40m" + str("${:,.2f}".format(aud)).rjust(7, ' ') + "\033[1;37;40m" + ' @ ' + "\033[1;35;40m" + str("${:,.0f}".format(float(o['price']))) + "\033[1;37;40m" + ' ' + "\033[1;37;40m" + 'OPEN'.center(9, ' ') + "\033[1;37;40m")
         else:
           print(str(o['status']))
-          
         count += 1
         
         if count > 7:
