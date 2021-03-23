@@ -1,7 +1,17 @@
-## python3 script for 2.2tft screen (12hx32w)
+## python3 script for 2.2tft screen, 18x40 chars
+##
 ## utilises binance api to collect and show 
 ## current btc market orders and basic 24hr
 ## trending data
+##
+##   device layout:
+##       _______________________
+##      | |      _____________  |
+##      | | *23 |             | |*17
+##      | | *22 |   screen    | |
+##      | | *24 | 18x40 chars | |
+##      | | *5  |_____________| |*4
+##      |_|_____________________|
 
 from binance.client import Client
 from binance.exceptions import BinanceAPIException
@@ -9,8 +19,8 @@ from binance.exceptions import BinanceAPIException
 if __name__ == '__main__':
   
   ## requrires binance acct api key/secret
-  api_key = ''
-  api_secret = ''
+  api_key = ''        # <- need to create/set
+  api_secret = ''     # <- need to create/set
   
   ## connect to api
   client = ''
