@@ -1,8 +1,6 @@
-## python3 script for 2.2tft screen, 18x40 chars
-##
-## utilises binance api to collect and show 
-## current btc market orders and basic 24hr
-## trending data
+## Python3 script for 2.2" tft screen, 18x40 chars.
+## Utilises binance api to collect and show current 
+## btc market orders and basic 24hr trending data.
 ##
 ##   device layout:
 ##       _______________________
